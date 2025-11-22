@@ -1,15 +1,31 @@
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import facilities from "../assets/facilities.json";
 
 export default function App() {
+  const insets = useSafeAreaInsets();
+  const router = useRouter();
+
   return (
-    <SafeAreaView style={styles.container}>
-      <Link href="/facilities/1">Go to Facility Details 1</Link>
-      <Link href="/facilities/2">Go to Facility Details 2</Link>
+    <View style={[styles.container, { paddingBottom: insets.bottom }]}>
+      <FlatList
+        data={facilities}
+        initialNumToRender={25}
+        renderItem={({ item }) => (
+          <Pressable
+            onPress={() => router.navigate(`/facilities/${item.id}`)}
+            style={styles.listItem}
+          >
+            <Text>{item.name}</Text>
+            <Text style={styles.listItemAddress}>{item.address}</Text>
+          </Pressable>
+        )}
+      />
       <StatusBar style="auto" />
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -17,7 +33,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+  },
+  listItem: {
+    padding: 10,
+    flexDirection: "column",
+    alignItems: "flex-start",
+    gap: 2,
+    borderBottomWidth: 1,
+    borderBottomColor: "#eee",
+  },
+  listItemAddress: {
+    fontSize: 12,
+    color: "#777",
   },
 });
