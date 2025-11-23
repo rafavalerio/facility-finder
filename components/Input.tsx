@@ -30,6 +30,7 @@ export const Input: React.FC<InputProps> = ({ icon, placeholder, value, onChange
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,

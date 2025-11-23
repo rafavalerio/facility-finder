@@ -100,6 +100,9 @@ const styles = StyleSheet.create({
     color: '#777',
   },
   searchContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
     padding: 10,
     backgroundColor: '#fff',
   },
