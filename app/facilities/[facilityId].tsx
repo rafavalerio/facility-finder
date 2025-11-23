@@ -2,11 +2,13 @@ import { useLocalSearchParams } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 import facilities from "../../assets/facilities.json";
 import { Tag } from "../../components/Tag";
+import MapView, { Marker } from "react-native-maps";
 
 const FacilityDetails = () => {
   const { facilityId } = useLocalSearchParams();
 
   const facility = facilities.find((facility) => facility.id === facilityId);
+  const location = facility?.location;
 
   if (!facility) {
     return <Text>Facility not found</Text>;
@@ -21,6 +23,26 @@ const FacilityDetails = () => {
           <Tag key={facility} text={facility} />
         ))}
       </View>
+      {location && (
+        <View>
+          <MapView
+            style={styles.map}
+            initialRegion={{
+              latitude: location.latitude,
+              longitude: location.longitude,
+              latitudeDelta: 0.01,
+              longitudeDelta: 0.01,
+            }}
+          >
+            <Marker
+              coordinate={{
+                latitude: location.latitude,
+                longitude: location.longitude,
+              }}
+            />
+          </MapView>
+        </View>
+      )}
     </View>
   );
 };
@@ -32,7 +54,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     padding: 10,
-    gap: 4,
+    gap: 10,
   },
   title: {
     fontSize: 20,
@@ -46,5 +68,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 6,
     flexWrap: "wrap",
+  },
+  map: {
+    width: "100%",
+    height: 200,
   },
 });
