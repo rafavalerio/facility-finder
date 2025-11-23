@@ -97,11 +97,11 @@ const styles = StyleSheet.create({
   },
   amenitiesContainer: {
     flexDirection: 'row',
-    gap: 6,
+    gap: 8,
+    padding: 8,
     flexWrap: 'wrap',
     borderWidth: 1,
     borderColor: '#e6e6e6',
-    padding: 8,
     borderRadius: 10,
   },
   map: {

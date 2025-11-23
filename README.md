@@ -2,72 +2,81 @@
 
 ## Overview
 
-Create a small, two-screen React Native application that allows users to find a partner fitness facility. This challenge is designed to be completed within **2 hours** and tests core React Native skills relevant to building fitness applications.
+Facility Finder is a React Native application built with Expo that allows users to browse and search through various facilities. Users can view detailed information about each facility, including amenities and location on a map.
 
-**Important:** The goal is not necessarily to finish every feature. We are most interested in seeing your approach to problem-solving, your coding style, and the architectural decisions you make. A well-structured, partially complete solution is better than a rushed, fully complete one.
+## Technologies Used
 
-## Provided Assets
+- **React Native** (0.81.5) - Cross-platform mobile development
+- **Expo** (~54.0.13) - Development platform and tooling
+- **Expo Router** (~6.0.15) - File-based navigation system
+- **@shopify/flash-list** (^2.2.0) - High-performance list component (optimised replacement for FlatList)
+- **@tanstack/react-query** (^5.90.10) - Data fetching and state management
+- **React Native Maps** (~1.20.1) - Map integration for location preview
+- **TypeScript** (~5.9.2) - Type-safe development
+- **Jest** & **@testing-library/react-native** - Testing framework
 
-- A basic Expo TypeScript boilerplate project (in the `app/` folder)
-- A `facilities.json` file (in the `assets/` folder) containing **fictional test data** (100 sample fitness facilities across Sydney and Melbourne)
+## Features
 
-## Core Requirements (MVP for 2 hours)
+✅ **Facility List** - Browse all available facilities with smooth scrolling performance  
+✅ **Search Functionality** - Search facilities by name in real-time  
+✅ **Facility Details** - View comprehensive information about each facility  
+✅ **Map Preview** - See the facility location on an interactive map  
+✅ **Amenities Display** - Browse all available amenities for each facility
 
-### 1. Home Screen
+## Installation
 
-- Load and display the list of facilities from the provided `facilities.json` file
-- The list must be performant (able to handle 100+ items efficiently)
-- Each list item should display the facility's **name** and **address**
-- Implement a text input field to allow users to **search/filter** the list by facility name in real-time
+Install all dependencies:
 
-### 2. Details Screen
+```bash
+npm i
+```
 
-- When a user taps on a facility from the list, they should navigate to a new screen
-- This screen should display all the details for the selected facility, including:
-  - Name
-  - Address
-  - List of facilities/amenities
+## Running Tests
 
-### 3. Technical Requirements
+Run the test suite:
 
-- The project must be written in **TypeScript**
-- Choose and implement a state management solution. Be prepared to discuss why you chose it
-- Use a navigation library
+```bash
+npm run test
+```
 
-## Stretch Goals (If you have extra time)
+## Running the App
 
-- Add a feature to filter facilities by their amenities
-- Add basic unit tests for a component or a utility function
-- Show a loading indicator while the initial data is being "fetched" and handle potential error states
-- Style the app to look clean and presentable (no need for pixel-perfection)
+### iOS
 
-## Getting Started
+```bash
+npm run ios
+```
 
-1. Navigate to the `app/` folder:
-   ```bash
-   cd app
-   ```
+### Android
 
-2. Install dependencies (already done, but you can run again if needed):
-   ```bash
-   npm install
-   ```
+```bash
+npm run android
+```
 
-3. Run on your preferred platform:
-   ```bash
-   npm run ios      # for iOS
-   npm run android  # for Android
-   npm run web      # for Web
-   ```
+### Development Server
 
-## Submission
+To start the Expo development server:
 
-When you're ready to submit:
+```bash
+npm start
+```
 
-1. Ensure your code is well-structured and includes comments where helpful
-2. Be prepared to discuss your architectural decisions and trade-offs
-3. Submit your solution by either:
-   - Sharing a link to a public GitHub repository, or
-   - Zipping up the challenge folder and emailing it back to us
+## Project Structure
 
-Good luck! We look forward to seeing what you build.
+```
+facility-finder/
+├── api/              # API layer for data fetching
+├── app/              # Expo Router pages
+│   ├── facilities/   # Facility detail pages
+│   └── index.tsx     # Home/List page
+├── components/       # Reusable UI components
+│   └── __tests__/    # Test files
+├── assets/           # Static assets and data
+```
+
+## Requirements
+
+- Node.js (LTS version recommended)
+- npm
+- Xcode (for iOS development)
+- Android Studio (for Android development)
