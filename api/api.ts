@@ -14,12 +14,12 @@ export type Facility = {
 };
 
 export const fetchFacilities = async () => {
-  await delay(400);
+  await delay(600);
   return facilities;
 };
 
 export const fetchFacility = async (id: string) => {
-  await delay(300);
+  await delay(400);
   const facility = facilities.find((facility) => facility.id === id);
 
   if (!facility) {

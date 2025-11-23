@@ -1,8 +1,9 @@
 import { Ionicons } from '@expo/vector-icons'
+import { FlashList } from '@shopify/flash-list'
 import { useRouter } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { useEffect, useMemo, useState } from 'react'
-import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { Facility, fetchFacilities } from '../api/api'
@@ -49,9 +50,8 @@ export default function App() {
           icon={<Ionicons name="search-outline" size={20} color="#bbb" />}
         />
       </View>
-      <FlatList
+      <FlashList
         data={filteredFacilities}
-        initialNumToRender={25}
         renderItem={({ item }) => (
           <Pressable
             onPress={() => router.navigate(`/facilities/${item.id}`)}

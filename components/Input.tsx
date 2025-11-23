@@ -17,6 +17,7 @@ export const Input: React.FC<InputProps> = ({ icon, placeholder, value, onChange
         placeholder={placeholder}
         value={value}
         onChangeText={onChangeText}
+        submitBehavior="blurAndSubmit"
       />
       {value && (
         <Pressable onPress={() => onChangeText('')} hitSlop={10} testID="close-circle">
