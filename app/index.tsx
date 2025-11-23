@@ -1,38 +1,30 @@
 import { Ionicons } from '@expo/vector-icons'
 import { FlashList } from '@shopify/flash-list'
+import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { Facility, fetchFacilities } from '../api/api'
 import { Input } from '../components/Input'
 
-export default function App() {
+const App = () => {
   const insets = useSafeAreaInsets()
   const router = useRouter()
   const [search, setSearch] = useState('')
-  const [facilities, setFacilities] = useState<Facility[]>([])
-  const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await fetchFacilities()
-      setFacilities(data)
-      setLoading(false)
-    }
-
-    fetchData()
-  }, [])
+  const { data, isLoading } = useQuery<Facility[]>({
+    queryKey: ['facilities'],
+    queryFn: fetchFacilities,
+  })
 
   const filteredFacilities = useMemo(() => {
-    return facilities.filter((facility) =>
-      facility.name.toLowerCase().includes(search.toLowerCase())
-    )
-  }, [search, facilities])
+    return data?.filter((facility) => facility.name.toLowerCase().includes(search.toLowerCase()))
+  }, [search, data])
 
-  if (loading) {
+  if (isLoading) {
     return (
       <View style={styles.container}>
         <ActivityIndicator size="large" color="#999" />
@@ -71,6 +63,8 @@ export default function App() {
     </View>
   )
 }
+
+export default App
 
 const styles = StyleSheet.create({
   container: {

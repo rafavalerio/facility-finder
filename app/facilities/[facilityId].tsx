@@ -1,5 +1,5 @@
+import { useQuery } from '@tanstack/react-query'
 import { useLocalSearchParams } from 'expo-router'
-import { useEffect, useState } from 'react'
 import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
 import MapView, { Marker } from 'react-native-maps'
 
@@ -9,19 +9,12 @@ import { Tag } from '../../components/Tag'
 const FacilityDetails = () => {
   const { facilityId } = useLocalSearchParams()
 
-  const [facility, setFacility] = useState<Facility | null>(null)
-  const [loading, setLoading] = useState(true)
+  const { data, isLoading } = useQuery<Facility>({
+    queryKey: ['facility', facilityId],
+    queryFn: () => fetchFacility(facilityId as string),
+  })
 
-  useEffect(() => {
-    const fetchFacilityData = async () => {
-      const data = await fetchFacility(facilityId as string)
-      setFacility(data)
-      setLoading(false)
-    }
-    fetchFacilityData()
-  }, [])
-
-  if (loading) {
+  if (isLoading) {
     return (
       <View style={[styles.container]}>
         <ActivityIndicator size="large" color="#999" />
@@ -29,15 +22,15 @@ const FacilityDetails = () => {
     )
   }
 
-  if (!facility) {
+  if (!data) {
     return <Text>Facility not found</Text>
   }
 
   return (
     <View style={styles.container}>
       <View style={styles.section}>
-        <Text style={styles.title}>{facility.name}</Text>
-        <Text style={styles.address}>{facility.address}</Text>
+        <Text style={styles.title}>{data.name}</Text>
+        <Text style={styles.address}>{data.address}</Text>
       </View>
 
       {location && (
@@ -45,16 +38,16 @@ const FacilityDetails = () => {
           <MapView
             style={styles.map}
             initialRegion={{
-              latitude: facility.location.latitude,
-              longitude: facility.location.longitude,
+              latitude: data.location.latitude,
+              longitude: data.location.longitude,
               latitudeDelta: 0.01,
               longitudeDelta: 0.01,
             }}
           >
             <Marker
               coordinate={{
-                latitude: facility.location.latitude,
-                longitude: facility.location.longitude,
+                latitude: data.location.latitude,
+                longitude: data.location.longitude,
               }}
             />
           </MapView>
@@ -64,7 +57,7 @@ const FacilityDetails = () => {
       <View style={styles.section}>
         <Text style={styles.amenitiesTitle}>Amenities</Text>
         <View style={styles.amenitiesContainer}>
-          {facility.facilities.map((facility) => (
+          {data.facilities.map((facility) => (
             <Tag key={facility} text={facility} />
           ))}
         </View>

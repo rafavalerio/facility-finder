@@ -2,7 +2,7 @@ import facilities from '../assets/facilities.json';
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export type Facility = {
+export interface Facility {
   id: string;
   name: string;
   address: string;
