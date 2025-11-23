@@ -15,7 +15,7 @@ const App = () => {
   const router = useRouter()
   const [search, setSearch] = useState('')
 
-  const { data, isLoading } = useQuery<Facility[]>({
+  const { data, isLoading, error } = useQuery<Facility[]>({
     queryKey: ['facilities'],
     queryFn: fetchFacilities,
   })
@@ -28,6 +28,14 @@ const App = () => {
     return (
       <View style={styles.container}>
         <ActivityIndicator size="large" color="#999" />
+      </View>
+    )
+  }
+
+  if (error) {
+    return (
+      <View style={[styles.container, { alignItems: 'center', justifyContent: 'center' }]}>
+        <Text>Error: {error.message}</Text>
       </View>
     )
   }
@@ -69,7 +77,7 @@ export default App
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#eee',
+    backgroundColor: '#fff',
     justifyContent: 'center',
   },
   emptyText: {
@@ -79,12 +87,13 @@ const styles = StyleSheet.create({
     color: '#777',
   },
   listItem: {
-    padding: 10,
+    padding: 14,
     flexDirection: 'column',
     alignItems: 'flex-start',
     gap: 2,
     borderBottomWidth: 1,
     borderBottomColor: '#ddd',
+    backgroundColor: '#eee',
   },
   listItemAddress: {
     fontSize: 12,
