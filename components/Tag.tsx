@@ -2,31 +2,10 @@ import React from "react";
 import { View, Text, StyleSheet, ViewStyle, TextStyle } from "react-native";
 
 export interface TagProps {
-  /**
-   * The text content to display in the tag
-   */
   text: string;
-
-  /**
-   * Background color of the tag
-   * @default '#E8F5E9'
-   */
   backgroundColor?: string;
-
-  /**
-   * Text color of the tag
-   * @default '#2E7D32'
-   */
   textColor?: string;
-
-  /**
-   * Additional custom styles for the tag container
-   */
   style?: ViewStyle;
-
-  /**
-   * Additional custom styles for the text
-   */
   textStyle?: TextStyle;
 }
 
