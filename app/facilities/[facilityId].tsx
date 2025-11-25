@@ -33,7 +33,7 @@ const FacilityDetails = () => {
         <Text style={styles.address}>{data.address}</Text>
       </View>
 
-      {location && (
+      {data.location && (
         <View style={styles.mapContainer}>
           <MapView
             style={styles.map}
