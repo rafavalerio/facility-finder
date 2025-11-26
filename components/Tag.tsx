@@ -7,6 +7,7 @@ export interface TagProps {
   textColor?: string
   style?: ViewStyle
   textStyle?: TextStyle
+  selected?: boolean
 }
 
 export const Tag: React.FC<TagProps> = ({
@@ -15,10 +16,13 @@ export const Tag: React.FC<TagProps> = ({
   textColor = '#2E7D32',
   style,
   textStyle,
+  selected = false,
 }) => {
   return (
-    <View style={[styles.container, { backgroundColor }, style]}>
-      <Text style={[styles.text, { color: textColor }, textStyle]}>{text}</Text>
+    <View style={[styles.container, { backgroundColor }, selected && styles.selected, style]}>
+      <Text style={[styles.text, { color: textColor }, selected && styles.textSelected, textStyle]}>
+        {text}
+      </Text>
     </View>
   )
 }
@@ -34,5 +38,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '600',
     letterSpacing: 0.2,
+  },
+  selected: {
+    backgroundColor: '#2E7D32',
+  },
+  textSelected: {
+    color: '#FFF',
   },
 })

@@ -9,7 +9,7 @@ import { Tag } from '../../components/Tag'
 const FacilityDetails = () => {
   const { facilityId } = useLocalSearchParams()
 
-  const { data, isLoading } = useQuery<Facility>({
+  const { data, isLoading, error } = useQuery<Facility>({
     queryKey: ['facility', facilityId],
     queryFn: () => fetchFacility(facilityId as string),
   })
@@ -18,6 +18,14 @@ const FacilityDetails = () => {
     return (
       <View style={[styles.container]}>
         <ActivityIndicator size="large" color="#999" />
+      </View>
+    )
+  }
+
+  if (error) {
+    return (
+      <View style={[styles.container]}>
+        <Text>Error: {error.message}</Text>
       </View>
     )
   }

@@ -1,9 +1,9 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Stack } from 'expo-router'
 
-const Layout = () => {
-  const queryClient = new QueryClient()
+const queryClient = new QueryClient()
 
+const Layout = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <Stack screenOptions={{ headerTintColor: '#00A1DC', headerBackButtonDisplayMode: 'minimal' }}>

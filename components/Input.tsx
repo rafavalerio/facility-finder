@@ -6,9 +6,16 @@ export interface InputProps {
   placeholder: string
   value: string
   onChangeText: (text: string) => void
+  onClear: () => void
 }
 
-export const Input: React.FC<InputProps> = ({ icon, placeholder, value, onChangeText }) => {
+export const Input: React.FC<InputProps> = ({
+  icon,
+  placeholder,
+  value,
+  onChangeText,
+  onClear,
+}) => {
   return (
     <View style={styles.container}>
       {icon ? icon : null}
@@ -18,9 +25,10 @@ export const Input: React.FC<InputProps> = ({ icon, placeholder, value, onChange
         value={value}
         onChangeText={onChangeText}
         submitBehavior="blurAndSubmit"
+        autoCorrect={false}
       />
       {value && (
-        <Pressable onPress={() => onChangeText('')} hitSlop={10} testID="close-circle">
+        <Pressable onPress={onClear} hitSlop={10} testID="close-circle">
           <Ionicons name="close-circle" size={20} color="#bbb" />
         </Pressable>
       )}

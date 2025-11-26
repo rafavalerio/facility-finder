@@ -4,25 +4,48 @@ import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'expo-router'
 import { StatusBar } from 'expo-status-bar'
 import { useMemo, useState } from 'react'
-import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { useDebounceValue } from 'usehooks-ts'
 
-import { Facility, fetchFacilities } from '../api/api'
+import { Facility, fetchAmenities, fetchFacilities } from '../api/api'
 import { Input } from '../components/Input'
+import { Tag } from '../components/Tag'
 
 const App = () => {
   const insets = useSafeAreaInsets()
   const router = useRouter()
   const [search, setSearch] = useState('')
+  const [selectedAmenities, setSelectedAmenities] = useState<string[]>([])
+  const [debouncedSearch] = useDebounceValue(search, 500)
+
+  const searchFilter = search === '' ? '' : debouncedSearch
+
+  const { data: amenities, isLoading: isLoadingAmenities } = useQuery<string[]>({
+    queryKey: ['amenities'],
+    queryFn: fetchAmenities,
+  })
 
   const { data, isLoading, error } = useQuery<Facility[]>({
     queryKey: ['facilities'],
     queryFn: fetchFacilities,
   })
 
+  const handleSelectAmenity = (amenity: string) => {
+    if (selectedAmenities.includes(amenity)) {
+      setSelectedAmenities((prev) => prev.filter((a) => a !== amenity))
+    } else {
+      setSelectedAmenities((prev) => [...prev, amenity])
+    }
+  }
+
   const filteredFacilities = useMemo(() => {
-    return data?.filter((facility) => facility.name.toLowerCase().includes(search.toLowerCase()))
-  }, [search, data])
+    return data?.filter(
+      (facility) =>
+        facility.name.toLowerCase().includes(searchFilter.toLowerCase()) &&
+        selectedAmenities.every((amenity) => facility.facilities.includes(amenity))
+    )
+  }, [searchFilter, data, selectedAmenities])
 
   if (isLoading) {
     return (
@@ -48,8 +71,26 @@ const App = () => {
           value={search}
           onChangeText={setSearch}
           icon={<Ionicons name="search-outline" size={20} color="#bbb" />}
+          onClear={() => setSearch('')}
         />
       </View>
+
+      {isLoadingAmenities ? (
+        <ActivityIndicator size="small" color="#999" />
+      ) : (
+        <ScrollView
+          horizontal
+          style={styles.amenitiesScroll}
+          contentContainerStyle={styles.amenitiesContainer}
+        >
+          {amenities?.map((amenity, index) => (
+            <Pressable key={`${amenity}-${index}`} onPress={() => handleSelectAmenity(amenity)}>
+              <Tag text={amenity} selected={selectedAmenities.includes(amenity)} />
+            </Pressable>
+          ))}
+        </ScrollView>
+      )}
+
       <FlashList
         data={filteredFacilities}
         renderItem={({ item }) => (
@@ -62,8 +103,19 @@ const App = () => {
           </Pressable>
         )}
         ListEmptyComponent={
-          <View style={styles.container}>
+          <View style={styles.emptyContainer}>
             <Text style={styles.emptyText}>No facilities found.</Text>
+            <Pressable
+              onPress={() => {
+                setSelectedAmenities([])
+                setSearch('')
+              }}
+            >
+              <View style={styles.clearAllFilters}>
+                <Ionicons name="close-circle" size={20} color="#bbb" />
+                <Text>Clear all filters</Text>
+              </View>
+            </Pressable>
           </View>
         }
       />
@@ -79,6 +131,31 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     justifyContent: 'center',
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  amenitiesScroll: {
+    flexGrow: 0,
+  },
+  amenitiesContainer: {
+    flexDirection: 'row',
+    gap: 8,
+    paddingHorizontal: 12,
+    paddingBottom: 12,
+  },
+  clearAllFilters: {
+    width: 150,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 4,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 16,
   },
   emptyText: {
     padding: 10,

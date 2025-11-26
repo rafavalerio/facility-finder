@@ -28,3 +28,10 @@ export const fetchFacility = async (id: string) => {
 
   return facility;
 };
+
+export const fetchAmenities = async () => {
+  await delay(400);
+  const amenities = facilities.flatMap((facility) => facility.facilities);
+  
+  return [...new Set(amenities)];
+};
