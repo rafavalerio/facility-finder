@@ -5,10 +5,13 @@ import { Input } from '../Input'
 
 describe('Input', () => {
   const mockOnChangeText = jest.fn()
+  const mockOnClear = jest.fn()
+
   const defaultProps = {
     placeholder: 'Search',
     value: '',
     onChangeText: mockOnChangeText,
+    onClear: mockOnClear,
   }
 
   beforeEach(() => {
@@ -73,14 +76,14 @@ describe('Input', () => {
   })
 
   describe('Clear button functionality', () => {
-    it('should call onChangeText with empty string when clear button is pressed', () => {
+    it('should call onClear when clear button is pressed', () => {
       render(<Input {...defaultProps} value="test query" />)
 
       const clearButton = screen.getByTestId('close-circle')
       fireEvent.press(clearButton)
 
-      expect(mockOnChangeText).toHaveBeenCalledWith('')
-      expect(mockOnChangeText).toHaveBeenCalledTimes(1)
+      expect(mockOnClear).toHaveBeenCalled()
+      expect(mockOnClear).toHaveBeenCalledTimes(1)
     })
   })
 })

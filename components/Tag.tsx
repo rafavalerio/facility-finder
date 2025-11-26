@@ -19,7 +19,10 @@ export const Tag: React.FC<TagProps> = ({
   selected = false,
 }) => {
   return (
-    <View style={[styles.container, { backgroundColor }, selected && styles.selected, style]}>
+    <View
+      testID="tag-container"
+      style={[styles.container, { backgroundColor }, selected && styles.selected, style]}
+    >
       <Text style={[styles.text, { color: textColor }, selected && styles.textSelected, textStyle]}>
         {text}
       </Text>
